@@ -39,7 +39,6 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
             loadDataFromCoreData()
         }
 
-        // Настройка tableView
         tableView.dataSource = self
         tableView.delegate = self
     }
@@ -202,8 +201,13 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
             let alert = UIAlertController(title: "Удалить задачу?", message: "Вы уверены, что хотите удалить задачу \"\(task.title)\"?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: { _ in
+                CoreDataManager.shared.deleteTask(task)
+                
                 self.tasks.remove(at: indexPath.row)
+                
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                
+                self.updateTaskCount()
             }))
             
             present(alert, animated: true, completion: nil)
@@ -215,15 +219,12 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
     func didLongPress(on cell: TaskTableViewCell) {
         selectedCell = cell
 
-        // Добавляем блюр
         addBlurEffect()
 
-        // Увеличиваем выбранную ячейку
         UIView.animate(withDuration: 0.3) {
             cell.transform = CGAffineTransform(scaleX: 1.1, y: 1.1)
         }
 
-        // Показываем выпадающий список
         showActionSheet(for: cell)
     }
 
@@ -254,14 +255,13 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
         alertController.addAction(deleteAction)
         alertController.addAction(cancelAction)
 
-        // Показываем выпадающий список
         present(alertController, animated: true, completion: nil)
     }
     
     private var blurEffectView: UIVisualEffectView?
 
     func addBlurEffect() {
-        let blurEffect = UIBlurEffect(style: .dark) // Можно выбрать стиль: .light, .dark, .extraLight
+        let blurEffect = UIBlurEffect(style: .dark)
         blurEffectView = UIVisualEffectView(effect: blurEffect)
         blurEffectView?.frame = self.view.bounds
         blurEffectView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -280,11 +280,11 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
         let todayDate = dateFormatter.string(from: Date())
         
         let newTask = Task(
-            id: tasks.count + 1, // Генерируем уникальный ID
+            id: tasks.count + 1,
             title: "",
             description: "",
             completed: false,
-            userId: 1, // Замените на реальный ID пользователя, если нужно
+            userId: 1,
             date: todayDate
         )
         
@@ -298,7 +298,6 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
                 guard let self = self else { return }
                 
                 if let updatedTask = updatedTask {
-                    // Если задача не пустая, обновляем или добавляем ее
                     if let index = self.tasks.firstIndex(where: { $0.id == updatedTask.id }) {
                         self.tasks[index] = updatedTask
                         if self.isSearching {
@@ -313,7 +312,6 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
                         }
                     }
                 } else {
-                    // Если задача пустая, удаляем ее
                     if let task = editVC.task {
                         if let index = self.tasks.firstIndex(where: { $0.id == task.id }) {
                             self.tasks.remove(at: index)

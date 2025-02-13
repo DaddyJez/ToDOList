@@ -28,7 +28,6 @@ class TaskTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        // Добавляем взаимодействие для контекстного меню
         let interaction = UIContextMenuInteraction(delegate: self)
         self.addInteraction(interaction)
     }
@@ -51,7 +50,6 @@ class TaskTableViewCell: UITableViewCell {
 
 extension TaskTableViewCell: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
-        // Добавляем блюр
 
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
             // Создаем контекстное меню
