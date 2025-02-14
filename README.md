@@ -41,7 +41,7 @@ How to Run the Project
 Clone the repository:
 bash
 Copy
-git clone https://github.com/your-username/ToDoList.git
+git clone https://github.com/your-username/ToDOList.git
 Open the project in Xcode.
 Build and run the app on a simulator or a physical device.
 Future Improvements
@@ -95,7 +95,7 @@ EditTaskViewController: Тесты для логики редактирован�
 Клонируйте репозиторий:
 bash
 Copy
-git clone https://github.com/your-username/ToDoList.git
+git clone https://github.com/your-username/ToDOList.git
 Откройте проект в Xcode.
 Соберите и запустите приложение на симуляторе или физическом устройстве.
 Планы по улучшению
