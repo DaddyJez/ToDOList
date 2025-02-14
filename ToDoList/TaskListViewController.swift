@@ -196,14 +196,24 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
 
     func didTapDelete(for cell: TaskTableViewCell) {
         if let indexPath = tableView.indexPath(for: cell) {
-            let task = tasks[indexPath.row]
+            // Получаем задачу из filteredTasks или tasks в зависимости от режима поиска
+            let task = isSearching ? filteredTasks[indexPath.row] : tasks[indexPath.row]
             
             let alert = UIAlertController(title: "Удалить задачу?", message: "Вы уверены, что хотите удалить задачу \"\(task.title)\"?", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "Отмена", style: .cancel, handler: nil))
             alert.addAction(UIAlertAction(title: "Удалить", style: .destructive, handler: { _ in
+                // Удаляем задачу из CoreData
                 CoreDataManager.shared.deleteTask(task)
                 
-                self.tasks.remove(at: indexPath.row)
+                // Удаляем задачу из основного массива tasks
+                if let index = self.tasks.firstIndex(where: { $0.id == task.id }) {
+                    self.tasks.remove(at: index)
+                }
+                
+                // Если поиск активен, удаляем задачу из filteredTasks
+                if self.isSearching {
+                    self.filteredTasks.remove(at: indexPath.row)
+                }
                 
                 self.tableView.deleteRows(at: [indexPath], with: .automatic)
                 
