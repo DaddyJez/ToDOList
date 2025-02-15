@@ -28,7 +28,7 @@ class TaskListViewController: UIViewController, UITableViewDataSource, UITableVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // Проверка первого запуска
         if !UserDefaultsManager.shared.hasLaunchedBefore {
             // Первый запуск: загружаем данные из JSON

@@ -51,11 +51,11 @@ class CoreDataManagerTests: XCTestCase {
     }
 
     func testDeleteTask() {
-        let task = Task(id: 1, title: "Test Task", description: "Test Description", completed: false, userId: 1, date: "12/02/25")
-        coreDataManager.saveTask(task)
+        let task = Task(id: 1, title: "Updated Task", description: "Test Description", completed: false, userId: 1, date: "12/02/25")
 
         coreDataManager.deleteTask(task)
         let fetchedTasks = coreDataManager.fetchTasksFromCoreData()
         XCTAssertTrue(fetchedTasks.isEmpty, "Tasks should be empty after deletion")
+        UserDefaultsManager.shared.hasLaunchedBefore = false
     }
 }
