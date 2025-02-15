@@ -36,6 +36,7 @@ class CoreDataManagerTests: XCTestCase {
         let fetchedTasks = coreDataManager.fetchTasksFromCoreData()
         XCTAssertFalse(fetchedTasks.isEmpty, "Tasks should not be empty after saving")
         XCTAssertEqual(fetchedTasks.first?.title, "Test Task", "Saved task title should match")
+        coreDataManager.deleteTask(task)
     }
 
     func testUpdateTask() {
@@ -48,10 +49,12 @@ class CoreDataManagerTests: XCTestCase {
 
         let fetchedTasks = coreDataManager.fetchTasksFromCoreData()
         XCTAssertEqual(fetchedTasks.first?.title, "Updated Task", "Task title should be updated")
+        coreDataManager.deleteTask(task)
     }
 
     func testDeleteTask() {
         let task = Task(id: 1, title: "Updated Task", description: "Test Description", completed: false, userId: 1, date: "12/02/25")
+        coreDataManager.saveTask(task)
 
         coreDataManager.deleteTask(task)
         let fetchedTasks = coreDataManager.fetchTasksFromCoreData()
